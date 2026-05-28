@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presentasi Informatika - Jenis Data</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+*{box-sizing:border-box;font-family:'Poppins',sans-serif}
+body{
+  margin:0;
+  background:#020617;
+  color:white;
+  overflow:hidden;
+}
+
+/* ===== ANIMATED BACKGROUND ===== */
+#bg{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+}
+
+.data-dot{
+  position:absolute;
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  background:radial-gradient(circle,#00e5ff,#38f9ff);
+  opacity:.7;
+  animation:float 12s linear infinite;
+}
+
+.data-line{
+  position:absolute;
+  width:80px;
+  height:4px;
+  border-radius:4px;
+  background:linear-gradient(90deg,#22c55e,#00e5ff);
+  opacity:.6;
+  animation:float 15s linear infinite;
+}
+
+.data-square{
+  position:absolute;
+  width:20px;
+  height:20px;
+  border-radius:6px;
+  background:linear-gradient(135deg,#a855f7,#00e5ff);
+  opacity:.6;
+  animation:float 18s linear infinite;
+}
+
+@keyframes float{
+  from{transform:translateY(0) translateX(0)}
+  to{transform:translateY(-120vh) translateX(60px)}
+}
+
+/* ===== SLIDE ===== */
+.slide{
+  position:absolute;
+  inset:0;
+  padding:40px 20px 120px;
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  overflow-y:auto;
+  animation:fade .45s ease;
+}
+.slide.active{display:flex}
+@keyframes fade{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+
+h1{font-size:3rem;margin:10px 0}
+h2{font-size:2rem;margin:10px 0}
+p{font-size:1.15rem;max-width:1000px;line-height:1.6}
+
+/* BOX */
+.box{
+  background:#020617cc;
+  border-left:6px solid #00e5ff;
+  padding:20px;
+  border-radius:18px;
+  margin:15px auto;
+  max-width:1050px;
+  text-align:left;
+  width:100%;
+  box-shadow:0 0 30px rgba(0,0,0,.6);
+}
+
+/* NAV */
+.navbar{
+  position:fixed;
+  bottom:15px;
+  left:50%;
+  transform:translateX(-50%);
+  background:#020617;
+  padding:10px 18px;
+  border-radius:40px;
+  display:flex;
+  gap:10px;
+  box-shadow:0 0 35px rgba(0,0,0,.9);
+  z-index:1000;
+}
+
+.navbar button{
+  background:linear-gradient(135deg,#00e5ff,#38f9ff);
+  border:none;
+  border-radius:25px;
+  padding:8px 18px;
+  font-size:13px;
+  font-weight:600;
+  cursor:pointer;
+  transition:.25s;
+}
+
+.navbar button:hover{transform:scale(1.1)}
+
+/* QUIZ */
+.quiz-box{
+  background:#020617;
+  border-radius:22px;
+  padding:22px;
+  max-width:900px;
+  width:100%;
+  box-shadow:0 0 35px rgba(0,0,0,.8);
+  margin-top:20px;
+  text-align:left;
+}
+
+.quiz-option{
+  background:#020617;
+  border:2px solid #00e5ff;
+  border-radius:16px;
+  padding:12px;
+  margin:10px 0;
+  cursor:pointer;
+  transition:.25s;
+}
+
+.quiz-option:hover{background:#00e5ff;color:black}
+
+.quiz-option.correct{background:#22c55e;border-color:#22c55e;color:white}
+.quiz-option.wrong{background:#ef4444;border-color:#ef4444;color:white}
+
+.quiz-result{
+  margin-top:12px;
+  font-size:1.1rem;
+  font-weight:600;
+  text-align:center;
+}
+
+.quiz-controls{
+  display:flex;
+  justify-content:space-between;
+  margin-top:12px;
+}
+
+.quiz-controls button{
+  padding:8px 18px;
+  border:none;
+  border-radius:20px;
+  background:#00e5ff;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.quiz-controls button:hover{background:#38f9ff}
+
+/* HINT */
+.swipe-hint{
+  position:fixed;
+  top:15px;
+  right:15px;
+  background:#020617;
+  padding:6px 12px;
+  border-radius:20px;
+  font-size:12px;
+  border:1px solid #00e5ff;
+  z-index:1000;
+}
+
+/* ===== LIVE CHART ===== */
+.chart-box{
+  background:#020617;
+  border-radius:22px;
+  padding:20px;
+  max-width:900px;
+  width:100%;
+  margin-top:15px;
+  box-shadow:0 0 35px rgba(0,0,0,.8);
+}
+</style>
+</head>
+
+<body>
+
+<!-- BACKGROUND -->
+<div id="bg"></div>
+
+<div class="swipe-hint">⬅️ ➡️ Geser / Klik Navigasi</div>
+
+<!-- ========== SLIDE 1 ========== -->
+<section class="slide active">
+  <h1>📘 Informatika</h1>
+  <h2>Jenis Data dan Pengelolaan Data dari Internet</h2>
+  <p>
+    Pada pertemuan pertama ini, peserta didik akan mempelajari berbagai jenis data serta cara mengakses dan mengelola data dari internet secara aman dan bertanggung jawab.
+  </p>
+
+  <div class="box">
+    <b>🧩 Tujuan Pembelajaran</b><br><br>
+    ✔ Peserta didik mampu membedakan jenis-jenis data.<br>
+    ✔ Peserta didik mampu mengakses dan mengelola data yang bersumber dari internet.
+  </div>
+
+  <div class="box">
+    <b>🌟 Pemahaman Bermakna</b><br><br>
+    Peserta didik mampu membedakan jenis-jenis data serta mengakses dan mengelola data yang bersumber dari internet secara tepat, aman, dan bertanggung jawab.
+  </div>
+</section>
+
+<!-- ========== SLIDE 2 ========== -->
+<section class="slide">
+  <h2>1️⃣ Jenis-Jenis Data</h2>
+
+  <div class="box">
+    <b>A. Berdasarkan Bentuknya</b><br><br>
+
+    📝 <b>Data Teks</b><br>
+    Data berupa tulisan seperti artikel, buku digital, chat, atau dokumen Word.<br>
+    <i>Contoh:</i> Teks berita di website sekolah.<br><br>
+
+    🔢 <b>Data Angka (Numerik)</b><br>
+    Data berupa angka yang dapat dihitung dan dianalisis.<br>
+    <i>Contoh:</i> Nilai ujian siswa dalam tabel Excel.<br><br>
+
+    🖼️ <b>Data Gambar</b><br>
+    Data dalam bentuk visual seperti foto, poster, dan grafik.<br>
+    <i>Contoh:</i> Poster kegiatan sekolah yang diunduh dari internet.<br><br>
+
+    🎧 <b>Data Audio</b><br>
+    Data berupa suara atau rekaman.<br>
+    <i>Contoh:</i> Rekaman pidato presiden dalam format MP3.<br><br>
+
+    🎥 <b>Data Video</b><br>
+    Data berupa gambar bergerak dan suara.<br>
+    <i>Contoh:</i> Video pembelajaran di YouTube.
+  </div>
+
+  <div class="box">
+    <b>B. Berdasarkan Sumbernya</b><br><br>
+
+    📌 <b>Data Primer</b><br>
+    Data yang diperoleh langsung dari sumber utama.<br>
+    <i>Contoh:</i> Hasil wawancara siswa tentang kebiasaan membaca.<br><br>
+
+    🌐 <b>Data Sekunder</b><br>
+    Data yang diperoleh dari sumber tidak langsung seperti internet atau buku.<br>
+    <i>Contoh:</i> Data jumlah penduduk dari website BPS.
+  </div>
+</section>
+
+<!-- ========== SLIDE 3 ========== -->
+<section class="slide">
+  <h2>2️⃣ Mengakses Data dari Internet</h2>
+
+  <div class="box">
+    <b>📥 Pengertian</b><br><br>
+    Mengakses data dari internet adalah kegiatan mencari, membuka, dan mengambil informasi dari website atau sumber online yang terpercaya untuk digunakan sesuai kebutuhan.
+  </div>
+
+  <div class="box">
+    <b>🔍 Cara Mengakses Data</b><br><br>
+    ✔ Menggunakan mesin pencari (Google, Bing).<br>
+    ✔ Mengunjungi website resmi (sekolah, pemerintah, lembaga).<br>
+    ✔ Mengunduh file data (PDF, Excel, CSV).
+  </div>
+
+  <div class="box">
+    <b>🧪 Contoh</b><br><br>
+    Seorang siswa ingin mengetahui jumlah penduduk Indonesia per provinsi.<br>
+    ➝ Siswa membuka Google.<br>
+    ➝ Mengetik: “Jumlah penduduk Indonesia BPS”.<br>
+    ➝ Mengunjungi website bps.go.id.<br>
+    ➝ Mengunduh tabel data dalam bentuk Excel.
+  </div>
+
+  <div class="box">
+    <b>⚠️ Etika dan Keamanan</b><br><br>
+    ✔ Periksa kebenaran sumber data.<br>
+    ✔ Jangan menyebarkan data pribadi.<br>
+    ✔ Cantumkan sumber saat menggunakan data orang lain.
+  </div>
+</section>
+
+<!-- ========== SLIDE 4 ========== -->
+<section class="slide">
+  <h2>3️⃣ Mengelola Data</h2>
+
+  <div class="box">
+    <b>📥 Pengertian</b><br><br>
+    Mengelola data adalah kegiatan mengatur, mengolah, menyimpan, dan menyajikan data agar mudah dipahami dan digunakan.
+  </div>
+
+  <div class="box">
+    <b>📊 Langkah-Langkah Mengelola Data</b><br><br>
+    1️⃣ Mengumpulkan data → Mengambil data dari survei atau internet.<br>
+    2️⃣ Mengelompokkan data → Mengatur data berdasarkan kategori.<br>
+    3️⃣ Menyimpan data → Menyimpan di folder, Excel, Google Sheets.<br>
+    4️⃣ Menyajikan data → Membuat tabel, grafik, laporan.
+  </div>
+
+  <div class="box">
+    <b>🧪 Contoh</b><br><br>
+    Data hasil survei kebiasaan membaca siswa diketik ke Excel, lalu dibuat grafik batang untuk mengetahui kebiasaan membaca terbanyak di kelas.
+  </div>
+</section>
+
+<!-- ========== SLIDE 5 ========== -->
+<section class="slide">
+  <h2>🧠 Kuis Interaktif</h2>
+
+  <div class="quiz-box" id="quizBox">
+    <div id="quizStatus" style="text-align:center;font-weight:600;margin-bottom:8px">Soal 1 / 5</div>
+    <h3 id="question"></h3>
+
+    <div id="options"></div>
+
+    <div class="quiz-result" id="result"></div>
+
+    <div class="quiz-controls">
+      <button onclick="prevQuestion()">⬅ Kembali</button>
+      <button onclick="nextQuestion()">Berikutnya ➡</button>
+    </div>
+
+    <div style="text-align:center;margin-top:12px">
+      <button onclick="resetQuiz()" style="background:#22c55e">🔄 Ulangi Kuis</button>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SLIDE 6 (CERITA + GRAFIK HIDUP) ========== -->
+<section class="slide">
+  <h2>📖 Cerita + Grafik Data Hidup</h2>
+
+  <div class="box">
+    <b>📌 Judul: Mencari Data dan Mengolahnya</b><br><br>
+    Pada suatu hari, Siti mendapat tugas dari guru Informatika untuk mencari data tentang
+    <b>jumlah penduduk Indonesia per provinsi</b>.
+  </div>
+
+  <div class="box">
+    <b>🔍 Langkah 1 – Mengakses Data</b><br><br>
+    Siti membuka Google dan mengetik:
+    <i>"Jumlah penduduk Indonesia per provinsi BPS"</i>.
+    Ia kemudian mengunjungi website resmi <b>bps.go.id</b> dan mengunduh file data dalam format Excel.
+  </div>
+
+  <div class="box">
+    <b>📊 Langkah 2 – Mengelola Data</b><br><br>
+    Data tersebut dibuka di Excel, lalu:
+    ✔ Diurutkan berdasarkan jumlah penduduk<br>
+    ✔ Dibuat grafik agar mudah dipahami
+  </div>
+
+  <div class="chart-box">
+    <h3 style="text-align:center;margin-bottom:10px">📈 Grafik Jumlah Penduduk (Simulasi Hidup)</h3>
+    <canvas id="liveChart"></canvas>
+    <p style="text-align:center;font-size:13px;margin-top:8px">
+      Grafik ini bergerak otomatis seperti data sungguhan
+    </p>
+  </div>
+
+  <div class="box">
+    <b>🌟 Hasil</b><br><br>
+    Siti berhasil membuat laporan data yang rapi dan mudah dibaca.
+    Guru memuji hasil kerjanya karena menggunakan sumber terpercaya dan menyajikan data dengan baik.
+  </div>
+</section>
+
+<!-- NAV BAR -->
+<div class="navbar">
+  <button onclick="goSlide(0)">🏠 Pembuka</button>
+  <button onclick="goSlide(1)">📊 Jenis Data</button>
+  <button onclick="goSlide(2)">🌐 Akses Data</button>
+  <button onclick="goSlide(3)">📁 Kelola Data</button>
+  <button onclick="goSlide(4)">🧠 Kuis</button>
+  <button onclick="goSlide(5)">📖 Cerita</button>
+</div>
+
+<script>
+/* SLIDES */
+const slides = document.querySelectorAll('.slide');
+let current = 0;
+
+function showSlide(i){
+  slides.forEach(s=>s.classList.remove('active'));
+  slides[i].classList.add('active');
+  current=i;
+}
+function goSlide(i){showSlide(i);}
+
+// Swipe
+let startX=0;
+document.addEventListener('touchstart',e=>startX=e.touches[0].clientX);
+document.addEventListener('touchend',e=>{
+  let endX=e.changedTouches[0].clientX;
+  if(endX<startX-60 && current<slides.length-1) showSlide(current+1);
+  if(endX>startX+60 && current>0) showSlide(current-1);
+});
+
+/* BACKGROUND GENERATOR */
+const bg=document.getElementById("bg");
+const shapes=50;
+
+for(let i=0;i<shapes;i++){
+  const el=document.createElement("div");
+  const type=Math.random();
+  if(type<0.33) el.className="data-dot";
+  else if(type<0.66) el.className="data-line";
+  else el.className="data-square";
+
+  el.style.left=Math.random()*100+"vw";
+  el.style.top=100+Math.random()*100+"vh";
+  el.style.animationDuration=10+Math.random()*15+"s";
+  el.style.animationDelay=Math.random()*10+"s";
+  bg.appendChild(el);
+}
+
+// Interaktif sentuh / mouse
+document.addEventListener("mousemove",e=>{
+  document.querySelectorAll("#bg div").forEach(el=>{
+    const rect=el.getBoundingClientRect();
+    const dx=e.clientX-(rect.left+rect.width/2);
+    const dy=e.clientY-(rect.top+rect.height/2);
+    const dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist<120){
+      el.style.transform=`translate(${dx*.25}px,${dy*.25}px) scale(1.2)`;
+    }else{
+      el.style.transform="translate(0,0) scale(1)";
+    }
+  });
+});
+
+document.addEventListener("touchmove",e=>{
+  const t=e.touches[0];
+  document.querySelectorAll("#bg div").forEach(el=>{
+    const rect=el.getBoundingClientRect();
+    const dx=t.clientX-(rect.left+rect.width/2);
+    const dy=t.clientY-(rect.top+rect.height/2);
+    const dist=Math.sqrt(dx*dx+dy*dy);
+    if(dist<140){
+      el.style.transform=`translate(${dx*.3}px,${dy*.3}px) scale(1.25)`;
+    }else{
+      el.style.transform="translate(0,0) scale(1)";
+    }
+  });
+});
+
+/* QUIZ */
+const quiz=[
+  { q:"1. Data berupa foto termasuk jenis?", options:["Data Audio","Data Gambar","Data Angka","Data Video"], answer:1 },
+  { q:"2. Data yang diperoleh dari internet disebut?", options:["Data Primer","Data Sekunder","Data Pribadi","Data Rahasia"], answer:1 },
+  { q:"3. Nilai rapor siswa termasuk jenis data?", options:["Data Audio","Data Angka","Data Video","Data Gambar"], answer:1 },
+  { q:"4. Menggunakan Google untuk mencari data disebut?", options:["Mengelola data","Mengakses data","Menyimpan data","Menghapus data"], answer:1 },
+  { q:"5. Membuat grafik dari tabel data termasuk kegiatan?", options:["Mengumpulkan data","Mengakses data","Menyajikan data","Menghapus data"], answer:2 }
+];
+
+let quizIndex=0;
+let userAnswers = Array(quiz.length).fill(null);
+
+function loadQuestion(){
+  const q=quiz[quizIndex];
+  document.getElementById("quizStatus").innerText = `Soal ${quizIndex+1} / ${quiz.length}`;
+  document.getElementById("question").innerText=q.q;
+
+  const optionsBox=document.getElementById("options");
+  optionsBox.innerHTML="";
+  q.options.forEach((opt,i)=>{
+    const div=document.createElement("div");
+    div.className="quiz-option";
+    div.innerText=opt;
+    div.onclick=()=>selectAnswer(i,div);
+    optionsBox.appendChild(div);
+  });
+
+  document.getElementById("result").innerText="";
+
+  if(userAnswers[quizIndex]!==null){
+    showSavedAnswer();
+  }
+}
+
+function selectAnswer(choice,el){
+  userAnswers[quizIndex]=choice;
+  const q=quiz[quizIndex];
+  const options=document.querySelectorAll(".quiz-option");
+
+  options.forEach((o,i)=>{
+    o.onclick=null;
+    if(i===q.answer) o.classList.add("correct");
+    if(i===choice && choice!==q.answer) o.classList.add("wrong");
+  });
+
+  if(choice===q.answer){
+    document.getElementById("result").innerText="✅ Jawaban Benar!";
+  }else{
+    document.getElementById("result").innerText="❌ Jawaban Salah!";
+  }
+}
+
+function showSavedAnswer(){
+  const q=quiz[quizIndex];
+  const options=document.querySelectorAll(".quiz-option");
+  const choice=userAnswers[quizIndex];
+
+  options.forEach((o,i)=>{
+    o.onclick=null;
+    if(i===q.answer) o.classList.add("correct");
+    if(i===choice && choice!==q.answer) o.classList.add("wrong");
+  });
+
+  if(choice===q.answer){
+    document.getElementById("result").innerText="✅ Jawaban Benar!";
+  }else{
+    document.getElementById("result").innerText="❌ Jawaban Salah!";
+  }
+}
+
+function nextQuestion(){
+  if(quizIndex<quiz.length-1){
+    quizIndex++;
+    loadQuestion();
+  }else{
+    showScore();
+  }
+}
+
+function prevQuestion(){
+  if(quizIndex>0){
+    quizIndex--;
+    loadQuestion();
+  }
+}
+
+function showScore(){
+  const correct=userAnswers.filter((a,i)=>a===quiz[i].answer).length;
+  document.getElementById("quizBox").innerHTML=`
+    <h2>🎉 Kuis Selesai!</h2>
+    <p>Skor kamu: <b>${correct} / ${quiz.length}</b></p>
+    <button onclick="resetQuiz()" style="padding:10px 20px;border:none;border-radius:20px;background:#22c55e;font-weight:600;cursor:pointer">🔄 Ulangi Kuis</button>
+  `;
+}
+
+function resetQuiz(){
+  quizIndex=0;
+  userAnswers=Array(quiz.length).fill(null);
+  document.getElementById("quizBox").innerHTML=`
+    <div id="quizStatus" style="text-align:center;font-weight:600;margin-bottom:8px">Soal 1 / 5</div>
+    <h3 id="question"></h3>
+    <div id="options"></div>
+    <div class="quiz-result" id="result"></div>
+    <div class="quiz-controls">
+      <button onclick="prevQuestion()">⬅ Kembali</button>
+      <button onclick="nextQuestion()">Berikutnya ➡</button>
+    </div>
+    <div style="text-align:center;margin-top:12px">
+      <button onclick="resetQuiz()" style="background:#22c55e">🔄 Ulangi Kuis</button>
+    </div>
+  `;
+  loadQuestion();
+}
+
+loadQuestion();
+
+/* ===== LIVE CHART ===== */
+const ctx = document.getElementById('liveChart').getContext('2d');
+const chartData = {
+  labels: ['Jabar','Jatim','Jateng','Sumut','Banten'],
+  datasets: [{
+    label: 'Jumlah Penduduk (juta)',
+    data: [48, 41, 36, 15, 12],
+    borderWidth: 2,
+    tension: 0.4,
+    fill: true
+  }]
+};
+
+const liveChart = new Chart(ctx, {
+  type: 'line',
+  data: chartData,
+  options: {
+    responsive:true,
+    animation:{duration:1000},
+    scales:{
+      y:{beginAtZero:true}
+    },
+    plugins:{
+      legend:{labels:{color:'white'}}
+    }
+  }
+});
+
+// Update otomatis (data hidup)
+setInterval(()=>{
+  liveChart.data.datasets[0].data =
+    liveChart.data.datasets[0].data.map(v => v + (Math.random()*4 - 2));
+  liveChart.update();
+},2000);
+</script>
+
+</body>
+</html>
