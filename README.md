@@ -1,0 +1,2 @@
+# analisisdata
+informatika8
